@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - Premium Data Insights</title>
+    <meta name="description" content="Modern analytics dashboard with real-time data visualization and interactive charts">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">📊</div>
+                <h1>DataPro</h1>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active">
+                    <span class="icon">📈</span>
+                    <span class="text">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="icon">💰</span>
+                    <span class="text">Receitas</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="icon">👥</span>
+                    <span class="text">Usuários</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="icon">📦</span>
+                    <span class="text">Produtos</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="icon">⚙️</span>
+                    <span class="text">Configurações</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">CO</div>
+                    <div class="user-info">
+                        <p class="user-name">Caio Oliveira</p>
+                        <p class="user-role">Admin</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h2>Dashboard de Análises</h2>
+                    <p class="subtitle">Bem-vindo de volta! Aqui está seu resumo de hoje.</p>
+                </div>
+                <div class="header-right">
+                    <div class="search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Buscar...">
+                    </div>
+                    <button class="notification-btn">
+                        <span class="icon">🔔</span>
+                        <span class="badge">3</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Cards -->
+            <section class="stats-section">
+                <div class="stat-card revenue">
+                    <div class="stat-header">
+                        <div class="stat-icon">💰</div>
+                        <span class="trend up">↗ 12.5%</span>
+                    </div>
+                    <div class="stat-content">
+                        <p class="stat-label">Receita Total</p>
+                        <h3 class="stat-value" data-stat="revenue">R$ 0</h3>
+                        <div class="mini-chart" id="revenueChart"></div>
+                    </div>
+                </div>
+
+                <div class="stat-card users">
+                    <div class="stat-header">
+                        <div class="stat-icon">👥</div>
+                        <span class="trend up">↗ 8.2%</span>
+                    </div>
+                    <div class="stat-content">
+                        <p class="stat-label">Usuários Ativos</p>
+                        <h3 class="stat-value" data-stat="users">0</h3>
+                        <div class="mini-chart" id="usersChart"></div>
+                    </div>
+                </div>
+
+                <div class="stat-card orders">
+                    <div class="stat-header">
+                        <div class="stat-icon">📦</div>
+                        <span class="trend down">↘ 3.1%</span>
+                    </div>
+                    <div class="stat-content">
+                        <p class="stat-label">Pedidos</p>
+                        <h3 class="stat-value" data-stat="orders">0</h3>
+                        <div class="mini-chart" id="ordersChart"></div>
+                    </div>
+                </div>
+
+                <div class="stat-card conversion">
+                    <div class="stat-header">
+                        <div class="stat-icon">📈</div>
+                        <span class="trend up">↗ 5.7%</span>
+                    </div>
+                    <div class="stat-content">
+                        <p class="stat-label">Taxa Conversão</p>
+                        <h3 class="stat-value" data-stat="conversion">0%</h3>
+                        <div class="mini-chart" id="conversionChart"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="chart-card large">
+                    <div class="card-header">
+                        <div>
+                            <h3>Visão Geral de Receitas</h3>
+                            <p class="card-subtitle">Performance mensal dos últimos 12 meses</p>
+                        </div>
+                        <div class="chart-controls">
+                            <button class="control-btn active">Mês</button>
+                            <button class="control-btn">Semana</button>
+                            <button class="control-btn">Dia</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Categorias de Produtos</h3>
+                            <p class="card-subtitle">Distribuição de vendas</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity & Top Products -->
+            <section class="bottom-section">
+                <div class="activity-card">
+                    <div class="card-header">
+                        <h3>Atividade Recente</h3>
+                        <button class="view-all">Ver tudo →</button>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon new-order">📦</div>
+                            <div class="activity-details">
+                                <p class="activity-title">Novo pedido #4521</p>
+                                <p class="activity-time">Há 2 minutos</p>
+                            </div>
+                            <div class="activity-value">R$ 1.249,00</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon new-user">👤</div>
+                            <div class="activity-details">
+                                <p class="activity-title">Novo usuário registrado</p>
+                                <p class="activity-time">Há 15 minutos</p>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon payment">💳</div>
+                            <div class="activity-details">
+                                <p class="activity-title">Pagamento recebido</p>
+                                <p class="activity-time">Há 1 hora</p>
+                            </div>
+                            <div class="activity-value">R$ 3.580,00</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon review">⭐</div>
+                            <div class="activity-details">
+                                <p class="activity-title">Nova avaliação 5 estrelas</p>
+                                <p class="activity-time">Há 2 horas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="products-card">
+                    <div class="card-header">
+                        <h3>Top Produtos</h3>
+                        <button class="view-all">Ver tudo →</button>
+                    </div>
+                    <div class="products-list">
+                        <div class="product-item">
+                            <div class="product-info">
+                                <div class="product-icon">💻</div>
+                                <div>
+                                    <p class="product-name">Notebook Pro</p>
+                                    <p class="product-sales">245 vendas</p>
+                                </div>
+                            </div>
+                            <div class="product-revenue">R$ 312.450</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-info">
+                                <div class="product-icon">🎧</div>
+                                <div>
+                                    <p class="product-name">Headset Gamer</p>
+                                    <p class="product-sales">189 vendas</p>
+                                </div>
+                            </div>
+                            <div class="product-revenue">R$ 98.560</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 68%"></div>
+                            </div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-info">
+                                <div class="product-icon">⌨️</div>
+                                <div>
+                                    <p class="product-name">Teclado RGB</p>
+                                    <p class="product-sales">156 vendas</p>
+                                </div>
+                            </div>
+                            <div class="product-revenue">R$ 67.890</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 52%"></div>
+                            </div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-info">
+                                <div class="product-icon">🖱️</div>
+                                <div>
+                                    <p class="product-name">Mouse Pro</p>
+                                    <p class="product-sales">134 vendas</p>
+                                </div>
+                            </div>
+                            <div class="product-revenue">R$ 45.230</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 42%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
