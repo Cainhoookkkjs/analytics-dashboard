@@ -3,14 +3,14 @@ function animateCounter(element, target, duration = 2000) {
     const start = 0;
     const increment = target / (duration / 16);
     let current = start;
-    
+
     const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
             current = target;
             clearInterval(timer);
         }
-        
+
         if (element.dataset.stat === 'revenue') {
             element.textContent = 'R$ ' + Math.floor(current).toLocaleString('pt-BR');
         } else if (element.dataset.stat === 'users') {
@@ -29,7 +29,7 @@ window.addEventListener('load', () => {
     const usersEl = document.querySelector('[data-stat="users"]');
     const ordersEl = document.querySelector('[data-stat="orders"]');
     const conversionEl = document.querySelector('[data-stat="conversion"]');
-    
+
     animateCounter(revenueEl, 524780);
     animateCounter(usersEl, 8234);
     animateCounter(ordersEl, 1547);
@@ -99,7 +99,7 @@ const mainChart = new Chart(mainCtx, {
                 padding: 12,
                 displayColors: true,
                 callbacks: {
-                    label: function(context) {
+                    label: function (context) {
                         return context.dataset.label + ': R$ ' + context.parsed.y.toLocaleString('pt-BR');
                     }
                 }
@@ -127,7 +127,7 @@ const mainChart = new Chart(mainCtx, {
                     font: {
                         size: 12
                     },
-                    callback: function(value) {
+                    callback: function (value) {
                         return 'R$ ' + (value / 1000) + 'k';
                     }
                 }
@@ -184,7 +184,7 @@ const categoryChart = new Chart(categoryCtx, {
                 borderWidth: 1,
                 padding: 12,
                 callbacks: {
-                    label: function(context) {
+                    label: function (context) {
                         return context.label + ': ' + context.parsed + '%';
                     }
                 }
@@ -198,7 +198,7 @@ const categoryChart = new Chart(categoryCtx, {
 function createSparkline(canvasId, data, color) {
     const ctx = document.getElementById(canvasId);
     if (!ctx) return;
-    
+
     new Chart(ctx, {
         type: 'line',
         data: {
@@ -238,10 +238,10 @@ setTimeout(() => {
 
 // Interatividade dos botões de controle do gráfico
 document.querySelectorAll('.control-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function () {
         document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
-        
+
         // Aqui você pode adicionar lógica para atualizar os dados do gráfico
         // baseado no período selecionado (Mês, Semana, Dia)
     });
@@ -252,7 +252,7 @@ setInterval(() => {
     // Simular atualização de dados
     const activityList = document.querySelector('.activity-list');
     const firstActivity = activityList.querySelector('.activity-item');
-    
+
     // Pequeno efeito de pulsar no card de notificações
     const notificationBtn = document.querySelector('.notification-btn');
     notificationBtn.style.transform = 'scale(1.1)';
@@ -263,7 +263,7 @@ setInterval(() => {
 
 // Efeito de hover nos cards de produtos
 document.querySelectorAll('.product-item').forEach(item => {
-    item.addEventListener('mouseenter', function() {
+    item.addEventListener('mouseenter', function () {
         const progressFill = this.querySelector('.progress-fill');
         const currentWidth = progressFill.style.width;
         progressFill.style.width = '0%';
@@ -273,14 +273,134 @@ document.querySelectorAll('.product-item').forEach(item => {
     });
 });
 
-// Smooth scroll para navegação
+// Navegação do sidebar com feedback visual
 document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', function(e) {
+    item.addEventListener('click', function (e) {
         e.preventDefault();
+
+        // Remove active de todos
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+
+        // Adiciona active no clicado
         this.classList.add('active');
+
+        // Pega o texto do menu clicado
+        const menuText = this.querySelector('.text').textContent;
+
+        // Atualiza o título do header
+        const headerTitle = document.querySelector('.dashboard-header h2');
+        const headerSubtitle = document.querySelector('.dashboard-header .subtitle');
+
+        // Títulos personalizados para cada seção
+        const titles = {
+            'Dashboard': {
+                title: 'Dashboard de Análises',
+                subtitle: 'Bem-vindo de volta! Aqui está seu resumo de hoje.'
+            },
+            'Receitas': {
+                title: 'Receitas e Faturamento',
+                subtitle: 'Acompanhe suas receitas e  desempenho financeiro.'
+            },
+            'Usuários': {
+                title: 'Gerenciamento de Usuários',
+                subtitle: 'Visualize e gerencie todos os usuários da plataforma.'
+            },
+            'Produtos': {
+                title: 'Catálogo de Produtos',
+                subtitle: 'Gerencie seu inventário e produtos disponíveis.'
+            },
+            'Configurações': {
+                title: 'Configurações do Sistema',
+                subtitle: 'Ajuste preferências e configurações da plataforma.'
+            }
+        };
+
+        // Atualiza com animação
+        headerTitle.style.opacity = '0';
+        headerSubtitle.style.opacity = '0';
+
+        setTimeout(() => {
+            headerTitle.textContent = titles[menuText].title;
+            headerSubtitle.textContent = titles[menuText].subtitle;
+            headerTitle.style.transition = 'opacity 0.3s ease';
+            headerSubtitle.style.transition = 'opacity 0.3s ease';
+            headerTitle.style.opacity = '1';
+            headerSubtitle.style.opacity = '1';
+        }, 150);
+
+        // Mostra notificação toast
+        showToast(`📍 Navegando para: ${menuText}`);
+
+        // Efeito de "carregamento" suave
+        const mainContent = document.querySelector('.main-content');
+        mainContent.style.opacity = '0.7';
+        setTimeout(() => {
+            mainContent.style.transition = 'opacity 0.3s ease';
+            mainContent.style.opacity = '1';
+        }, 200);
     });
 });
+
+// Função para mostrar notificação toast
+function showToast(message) {
+    // Remove toast anterior se existir
+    const oldToast = document.querySelector('.toast-notification');
+    if (oldToast) oldToast.remove();
+
+    // Cria novo toast
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        z-index: 10000;
+        animation: slideInRight 0.3s ease;
+        font-weight: 600;
+        font-size: 0.95rem;
+    `;
+
+    document.body.appendChild(toast);
+
+    // Remove após 2 segundos
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}
+
+// Adiciona animações CSS para o toast
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
 
 // Animação de entrada dos elementos
 const observerOptions = {
@@ -307,7 +427,7 @@ let lastScrollTop = 0;
 
 window.addEventListener('scroll', () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
+
     if (window.innerWidth <= 768) {
         if (scrollTop > lastScrollTop) {
             sidebar.style.transform = 'translateX(-100%)';
@@ -315,7 +435,7 @@ window.addEventListener('scroll', () => {
             sidebar.style.transform = 'translateX(0)';
         }
     }
-    
+
     lastScrollTop = scrollTop;
 });
 
